@@ -2,3 +2,4 @@ node_modules
 *.log
 config.js
 upload.sh
+deployment-package.zip
