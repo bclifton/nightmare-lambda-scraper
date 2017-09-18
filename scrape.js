@@ -1,6 +1,7 @@
 const vo = require('vo')
 const Nightmare = require('nightmare')
-require('nightmare-inline-download')(Nightmare);
+require('nightmare-inline-download')(Nightmare)
+const random_ua = require('./lib/random_ua')
 
 module.exports = {
   runScrape,
@@ -11,6 +12,8 @@ function *runScrape(electronPath, callback) {
     show: true,
     electronPath: electronPath
   })
+
+  console.log(nightmare.useragent());
 
   let href = yield nightmare
     .goto('https://duckduckgo.com')
@@ -27,6 +30,9 @@ function *runScrape(electronPath, callback) {
 }
 
 if (require.main === module) {
+
+  console.log(random_ua.generate());
+
   vo(runScrape)
     .then((res) => console.log('done', res))
     .catch((e) => console.rror(e))
