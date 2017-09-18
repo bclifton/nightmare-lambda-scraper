@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/bclifton/nightmare-lambda-scraper#readme",
   "dependencies": {
+    "async": "^2.5.0",
     "nightmare": "^2.10.0",
-    "nightmare-inline-download": "^0.2.2"
+    "nightmare-inline-download": "^0.2.2",
+    "vo": "^4.0.2"
   }
 }

@@ -44,3 +44,8 @@ The s3 and lambda functions need to be set in the same region.
 
 1. `./update.sh && ./test.sh`
 
+
+
+#### Testing locally without Lambda:
+
+`node scrape.js`

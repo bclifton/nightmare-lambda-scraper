@@ -1,37 +1,33 @@
+const vo = require('vo')
 const Nightmare = require('nightmare')
+require('nightmare-inline-download')(Nightmare);
 
 module.exports = {
   runScrape,
 }
 
-function runScrape(electronPath, done) {
-  var nightmare = Nightmare({
-    show: true,                   // show actual browser window as Nightmare clicks through
-    electronPath: electronPath    // you MUST specify electron path which you receive from installation
+function *runScrape(electronPath, callback) {
+  let nightmare = Nightmare({
+    show: true,
+    electronPath: electronPath
   })
 
-  nightmare
+  let href = yield nightmare
     .goto('https://duckduckgo.com')
     .type('#search_form_input_homepage', 'github nightmare')
     .click('#search_button_homepage')
     .wait('#r1-0 a.result__a')
     .evaluate(() => document.querySelector('#r1-0 a.result__a').href)
-    .end()
-    .then((result) => {
-      console.log(result)
-      done(null, result)
-    })
-    .catch((error) => {
-      console.error('Search failed:', error)
-      done(error)
-    })
+
+  yield nightmare.end()
+
+  return nightmare
+    .then(() => href)
+    .catch((e) => console.error(e))
 }
 
-
-
 if (require.main === module) {
-  runScrape(require('electron'), (err, result) => {
-    if (err) console.error(err)
-    console.log(result)
-  })
+  vo(runScrape)
+    .then((res) => console.log('done', res))
+    .catch((e) => console.rror(e))
 }
