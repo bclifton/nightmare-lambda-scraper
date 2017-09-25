@@ -1,3 +1,0 @@
-module.exports = {
-  defaultElectronPackageUrl: 'https://s3.amazonaws.com/<YOUR-BUCKET-NAME>/nightmare-lambda-pck-with-xvfb-20170313-1726-43.zip',
-}

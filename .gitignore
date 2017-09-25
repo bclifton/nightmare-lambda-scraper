@@ -1,5 +1,4 @@
 node_modules
 *.log
-config.js
-upload.sh
+config.yml
 deployment-package.zip

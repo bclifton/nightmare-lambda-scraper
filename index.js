@@ -1,10 +1,11 @@
 const vo = require('vo')
-const binaryPack = require('./lib/nightmare-lambda-pack')
 const Xvfb = require('./lib/xvfb')
-const { runScrape } = require('./scrape')
+const { initializeNightmare, runScrape } = require('./scraper/scrape')
+const { newDebug, error } = require('./utils/debug')
+const { isOnLambda, electronPath } = require('./utils/settings')
 
-var isOnLambda = binaryPack.isRunningOnLambdaEnvironment
-var electronPath = binaryPack.installNightmareOnLambdaEnvironment()
+const debug = newDebug('scraper:index')
+
 
 exports.handler = function(event, context){
   var xvfb = new Xvfb({
@@ -20,15 +21,22 @@ exports.handler = function(event, context){
       xvfb.stop((err) => context.done(err, result))
     }
 
-    vo(runScrape)
+    vo(initializeNightmare, runScrape)
       .then((res) => {
-        console.log('done', res)
+        debug(`done: ${res}`)
         done(null, res)
       })
       .catch((err) => {
-        console.error(err)
+        error(err)
         done(err)
       })
 
   })
+}
+
+
+if (require.main === module) {
+  vo(initializeNightmare, runScrape)
+    .then((res) => debug('done', res))
+    .catch((e) => error(e))
 }

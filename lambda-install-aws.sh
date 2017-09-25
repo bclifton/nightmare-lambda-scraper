@@ -1,10 +1,11 @@
 #!/bin/bash +x
+eval "$(./lib/yaml.sh ./config/config.yml)"
 
 #############
 #  Settings
 #############
-FUNCTION=your-function-name
-REGION=us-east-1
+FUNCTION=${function_name}
+REGION=${aws_region}
 DEPLOYMENT_PACKAGE_ZIP=deployment-package.zip
 TIMEOUT=60
 RUNTIME=nodejs6.10
