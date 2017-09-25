@@ -1,11 +1,10 @@
-const vo = require('vo')
 const Nightmare = require('nightmare')
 require('nightmare-inline-download')(Nightmare)
-const random_ua = require('./../lib/random_ua')
+const random_ua = require('./../utils/random_ua')
 const { newDebug, error } = require('./../utils/debug')
 const { isOnLambda, electronPath } = require('./../utils/settings')
 
-const debug = newDebug('scraper:scraper')
+const debug = newDebug('scraper:scrape')
 
 
 module.exports = {
@@ -41,12 +40,5 @@ function *runScrape(nightmare, callback) {
 
   return nightmare
     .then(() => href)
-    .catch((e) => error(e))
-}
-
-
-if (require.main === module) {
-  vo(initializeNightmare, runScrape)
-    .then((res) => debug('done', res))
     .catch((e) => error(e))
 }

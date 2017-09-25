@@ -1,9 +1,10 @@
 # nightmare-lambda-scraper
 
-This relies heavily on [dimkir's nightmare-lambda-tutorial](https://github.com/dimkir/nightmare-lambda-tutorial).
+This relies heavily on the excellent work of [dimkir's nightmare-lambda-tutorial](https://github.com/dimkir/nightmare-lambda-tutorial).
 
-1. install the CLI for AWS: https://aws.amazon.com/cli/
+#### Preparation:
 
+1. Install and configure the CLI for AWS: https://aws.amazon.com/cli/
 
 
 
@@ -18,7 +19,7 @@ This relies heavily on [dimkir's nightmare-lambda-tutorial](https://github.com/d
    function_name: <YOUR-FUNCTION-NAME> # The name of the lambda function.
    ```
 
-2. Run `./upload_lambda_pack_to_s3.sh`
+2. Run `./upload_lambda_pack_to_s3.sh`. This will upload the packaged Electron and Xvfb to your bucket. Since the S3 bucket exists in the same region as Lambda, the file will download and extract quickly when the Lambda function is invoked. This gives us the freedom to not have to download Electron each time.
 
 3. Run `./lambda_install_aws.sh`. If successful, the output should look like this:
 
@@ -33,29 +34,40 @@ This relies heavily on [dimkir's nightmare-lambda-tutorial](https://github.com/d
        "FunctionName": "<YOUR-FUNCTION-NAME>",
        "CodeSize": 3111164,
        "MemorySize": 1024,
-       "FunctionArn": "arn:aws:lambda:us-east-1:870900011006:function:<YOUR-FUNCTION-NAME>",
+       "FunctionArn": "arn:aws:lambda:<YOUR-AWS-REGION>:870900011006:function:<YOUR-FUNCTION-NAME>",
        "Version": "$LATEST",
        "Role": "arn:aws:iam::870900011006:role/<YOUR-FUNCTION-NAME>-lambda-execution-role",
        "Timeout": 60,
-       "LastModified": "2017-09-25T02:34:05.423+0000",
+       "LastModified": "2017-09-25T00:00:00.000+0000",
        "Handler": "index.handler",
        "Runtime": "nodejs6.10",
        "Description": ""
    }
    ```
 
-4. `./update.sh` and `./test.sh`
+   This script initializes the Lambda script itself, creating the execution role, execution policy, and the Lambda function.
 
-5. `cat done.log` should be`"https://github.com/segmentio/nightmare"`, if it is `null`, then there was an error.
+4. Run: `./update.sh`. This zips the files and updates the Lambda function by uploading the new zip file.
+
+5. Run: `./test.sh`. If successful, then script will return:
+
+   ```
+   {
+       "StatusCode": 200
+   }
+   ```
+
+   And `$ cat done.log` should be: `"https://github.com/segmentio/nightmare"`.
+
 
 
 
 #### Updating:
 
-1. `./update.sh && ./test.sh`
+`./update.sh && ./test.sh`
 
 
 
 #### Testing locally without Lambda:
 
-`DEBUG=nightmare:actions*,scraper:* node scrape.js`
+`DEBUG=nightmare:actions*,scraper:* node index.js`

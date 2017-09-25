@@ -1,7 +1,6 @@
-- [ ] enable running nightmare locally
+- [x] enable running nightmare locally
+- [x] ~~use `async` for pipeline~~ using `vo` instead
+      - [x] need to wrap nightmare as a generator function
 - [ ] read data triggering lambda
 - [ ] save result to s3
       - [ ] take screen shot of website
-- [ ] use async for pipeline
-      - [ ] need to wrap nightmare as a generator function
-
